@@ -1,0 +1,94 @@
+<resources>
+    <string name="map_api_key">AIzaSyCbc2Y5AIwZ8uUeHRUXiozGN3CnpjKT0oI</string>
+
+    <string name="app_name">Rubbish</string>
+    <string name="papers">Papers</string>
+    <string name="plastics">Plastics</string>
+    <string name="metal">Metal</string>
+    <string name="home">Home</string>
+    <string name="notifications">Notifications</string>
+    <string name="profile">Profile</string>
+    <string name="si_su">Please Sign in or Sign up</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="cancel">Cancel</string>
+    <string name="order_sent_successfull">Order sent successfully !</string>
+    <string name="ok">OK</string>
+    <string name="suc">Success !</string>
+    <string name="no_notifications_to_display">No notifications to display</string>
+    <string name="logout">Logout</string>
+    <string name="general_settings">General Settings</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="contact_us">Contact us</string>
+    <string name="rate_this_app">Rate App</string>
+    <string name="help">Help</string>
+    <string name="about_tour">About tour</string>
+    <string name="back">Back</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="subject">Subject</string>
+    <string name="send">Send</string>
+    <string name="field_req">Field required</string>
+    <string name="inv_email">Invalid email</string>
+    <string name="wait">Wait...</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="skip">Skip</string>
+    <string name="code">Code</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="select_location_on_map">Select location on map</string>
+    <string name="search_for_address">Search for address</string>
+    <string name="something">Some thing went haywire</string>
+    <string name="pas_short">is too short</string>
+    <string name="ph_num_not_start">Phone number shouldn\'t start with 0</string>
+    <string name="send_order">Send order</string>
+    <string name="have_rubbish">Have Rubbish ?</string>
+    <string name="send_order_ques">Send order ?</string>
+    <string name="search2">Search for client data</string>
+    <string name="client_id">Client id</string>
+    <string name="orders">Orders</string>
+    <string name="no_orders_to_display">No orders to display</string>
+    <string name="order_state">Order state</string>
+    <string name="show_details">Show details</string>
+    <string name="new_order">New order</string>
+    <string name="order_sent_to_emp">Order sent to employee</string>
+    <string name="search3">Search</string>
+    <string name="no_emp">No employees to display</string>
+    <string name="report">Report</string>
+    <string name="supervisor_name">Supervisor name</string>
+    <string name="employee_name">Employee name</string>
+    <string name="suc_sent">sent</string>
+    <string name="no_emp_to_send">No Employee</string>
+    <string name="order_pend">Order is pending...</string>
+    <string name="order_details">Order details</string>
+    <string name="accept_order">Accept Order</string>
+    <string name="no_problems_to_display">Contact and technical support</string>
+    <string name="support">Support</string>
+    <string name="ch_city">Choose city</string>
+    <string name="total">Total :</string>
+    <string name="total_salary">Total Salary :</string>
+    <string name="total_bonus">Total Bonus :</string>
+    <string name="total2">Total</string>
+    <string name="no_reports_to_display">No reports to display</string>
+    <string name="reports">Reports</string>
+    <string name="supervisor">Supervisor</string>
+    <string name="update">update</string>
+    <string name="choose_job">Choose Job</string>
+    <string name="employee">Employee</string>
+    <string name="financial">Financial</string>
+    <string name="head_manager">Head manager</string>
+    <string name="select">Select</string>
+    <string name="delete">Delete</string>
+    <string name="delete2">Delete ?</string>
+    <string name="sorry">Sorry</string>
+    <string name="your_account_deactivated">Your account deactivated</string>
+    <string name="clear">clear</string>
+    <string-array name="job_array">
+        <item>Employee</item>
+        <item>Supervisor</item>
+        <item>Financial manager</item>
+        <item>Head manager</item>
+
+    </string-array>
+</resources>

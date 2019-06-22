@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorAccent">#3F51B5</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="gray0">#fafafa</color>
+    <color name="gray1">#F5F5F5</color>
+    <color name="gray3">#E0E0E0</color>
+    <color name="gray4">#bdbdbd</color>
+    <color name="gray5">#212121</color>
+    <color name="yellow">#3F51B5</color>
+    <color name="bottom_sheet_color">#77000000</color>
+    <color name="delete">#F44336</color>
+    <color name="btn_deactive">#283593</color>
+
+</resources>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "170191258048",
+    "firebase_url": "https://rubbish-26017.firebaseio.com",
+    "project_id": "rubbish-26017",
+    "storage_bucket": "rubbish-26017.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170191258048:android:17b91e12b69ec08b",
+        "android_client_info": {
+          "package_name": "com.creative.share.apps.rubbish"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "170191258048-6r8johce66798sft1de8eugfp3aek2ua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr1q-TRwZ9tLUs1V9Y_MKHUDgGX2PPeNg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "170191258048-6r8johce66798sft1de8eugfp3aek2ua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

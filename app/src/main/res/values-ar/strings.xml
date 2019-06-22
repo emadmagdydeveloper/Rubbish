@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="map_api_key">AIzaSyCbc2Y5AIwZ8uUeHRUXiozGN3CnpjKT0oI</string>
+
+    <string name="app_name">تجميع القمامة</string>
+    <string name="papers">ورق</string>
+    <string name="plastics">بلاستيك</string>
+    <string name="metal">معدن</string>
+    <string name="home">الرئيسية</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="profile">حسابي</string>
+    <string name="si_su">برجاء تسجيل الدخول او إنشاء حساب جديد.</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="sign_up">إنشاء حساب جديد</string>
+    <string name="cancel">إلغاء</string>
+    <string name="order_sent_successfull">تم إرسال الطلب بنجاح !</string>
+    <string name="ok">حسنا !</string>
+    <string name="suc">تم بنجاح !</string>
+    <string name="no_notifications_to_display">لا توجد إشعارات لعرضها</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="general_settings">الاعدادات العامة</string>
+    <string name="terms_of_service">الشروط والاحكام</string>
+    <string name="contact_us">إتصل بنا</string>
+    <string name="rate_this_app">قيم التطبيق</string>
+    <string name="help">مساعدة</string>
+    <string name="about_tour">عن التطبيق</string>
+    <string name="back">رجوع</string>
+    <string name="name">الإسم</string>
+    <string name="email">البريد الالكتروني</string>
+    <string name="subject">الموضوع</string>
+    <string name="send">إرسال</string>
+    <string name="field_req">الحقل مطلوب</string>
+    <string name="inv_email">البريد الالكتروني غير صحيح</string>
+    <string name="wait">إنتظر قليلا...</string>
+    <string name="username">إسم المستخدم</string>
+    <string name="password">كلمة المرور</string>
+    <string name="skip">تخطي</string>
+    <string name="code">الكود</string>
+    <string name="phone_number">رقم الجوال</string>
+    <string name="address">العنوان</string>
+    <string name="select_location_on_map">حدد موقعك على الخريطة</string>
+    <string name="search_for_address">إبحث عن عنوان</string>
+    <string name="something">خطأ تحقق من الاتصال بالانترنت</string>
+    <string name="pas_short">كلمة المرور قصيرة جدا</string>
+    <string name="ph_num_not_start">لا ينبغي ان يبدأ رقم الهاتف ب 0</string>
+    <string name="send_order">إرسال طلب</string>
+    <string name="have_rubbish">عندي قمامة</string>
+    <string name="send_order_ques">هل تريد إرسال الطلب ؟</string>
+    <string name="search2">إبحث عن بيانات عميل</string>
+    <string name="client_id">رقم العميل</string>
+    <string name="orders">الطلبات</string>
+    <string name="no_orders_to_display">لا توجد طلبات لعرضها</string>
+    <string name="order_state">الحالة</string>
+    <string name="show_details">عرض التفاصيل</string>
+    <string name="new_order">طلب جديد</string>
+    <string name="order_sent_to_emp">تم الإرسال</string>
+    <string name="search3">بحث</string>
+    <string name="no_emp">لا يوجد موظفين لعرضهم</string>
+    <string name="report">تقرير</string>
+    <string name="supervisor_name">إسم المشرف</string>
+    <string name="employee_name">إسم الموظف</string>
+    <string name="suc_sent">تم الارسال</string>
+    <string name="no_emp_to_send">لا يوجد عمال لارسال الطلب اليهم.</string>
+    <string name="order_pend"> قيد التنفيذ...</string>
+    <string name="order_details">تفاصيل الطلب</string>
+    <string name="accept_order">الموافقة على الطلب</string>
+    <string name="no_problems_to_display">الاتصال والدعم</string>
+    <string name="support">الدعم</string>
+    <string name="ch_city">إختر المحافظة</string>
+    <string name="total">الاجمالى :</string>
+    <string name="total_salary">اجمالي المرتبات</string>
+    <string name="total_bonus">إجمالي العلاوات :</string>
+    <string name="total2">الاجمالى</string>
+    <string name="no_reports_to_display">لا توجد تقارير لعرضها</string>
+    <string name="reports">تقارير</string>
+    <string name="supervisor">مشرف</string>
+    <string name="update">تعديل</string>
+    <string name="choose_job">إختر الوظيفة</string>
+    <string name="employee">موظف</string>
+    <string name="financial">مدير مالية</string>
+    <string name="head_manager">المدير</string>
+    <string name="select">إختر</string>
+    <string name="delete">حذف</string>
+    <string name="delete2">حذف ؟</string>
+    <string name="sorry">نأسف لسيادتكم</string>
+    <string name="your_account_deactivated">تم تعطيل حسابك</string>
+    <string name="clear">حذف الكل</string>
+
+    <string-array name="job_array">
+        <item>موظف</item>
+        <item>مشرف</item>
+        <item>مدير مالية</item>
+        <item>المدير</item>
+
+    </string-array>
+</resources>
