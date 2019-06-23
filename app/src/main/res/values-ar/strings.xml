@@ -95,6 +95,7 @@
     <string name="plastic_content">المحتوى</string>
     <string name="battery_content">المحتوى</string>
     <string name="ewaste_content">المحتوى</string>
+    <string name="no_sv_to_receive_order">عفوا لا يوجد مشرفين لاستقبال طلبك.</string>
 
     <string-array name="job_array">
         <item>موظف</item>

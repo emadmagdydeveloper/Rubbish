@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,10 +35,10 @@ public class Head_Manager_Fragment_Reports extends Fragment {
 
     private ProgressBar progBar;
     private RecyclerView recView;
-    private Button btn_clear;
+    private TextView tv_clear;
     private RecyclerView.LayoutManager manager;
     private HeadMangerHomeActivity activity;
-    private List<ReportModel> reportModelList;
+    private List<ReportModel> reportModelList, reverseList;
     private HeadManagerReportAdapter adapter;
     private LinearLayout ll_no_report;
     private DatabaseReference dRef;
@@ -66,11 +66,12 @@ public class Head_Manager_Fragment_Reports extends Fragment {
 
     private void initView(View view) {
 
+        reverseList = new ArrayList<>();
         reportModelList = new ArrayList<>();
         dRef = FirebaseDatabase.getInstance().getReference();
         activity = (HeadMangerHomeActivity) getActivity();
         ll_no_report = view.findViewById(R.id.ll_no_report);
-        btn_clear = view.findViewById(R.id.btn_clear);
+        tv_clear = view.findViewById(R.id.tv_clear);
 
         progBar = view.findViewById(R.id.progBar);
         progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
@@ -81,7 +82,7 @@ public class Head_Manager_Fragment_Reports extends Fragment {
         recView.setAdapter(adapter);
         getReports();
 
-        btn_clear.setOnClickListener(new View.OnClickListener() {
+        tv_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DeleteAll();
@@ -100,7 +101,7 @@ public class Head_Manager_Fragment_Reports extends Fragment {
                     @Override
                     public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                         dialog.dismiss();
-                        btn_clear.setVisibility(View.GONE);
+                        tv_clear.setVisibility(View.GONE);
                         reportModelList.clear();
                         adapter.notifyDataSetChanged();
                         ll_no_report.setVisibility(View.VISIBLE);
@@ -119,23 +120,26 @@ public class Head_Manager_Fragment_Reports extends Fragment {
                             progBar.setVisibility(View.GONE);
                             ll_no_report.setVisibility(View.GONE);
 
-                            reportModelList.clear();
+                            reverseList.clear();
                             for (DataSnapshot ds :dataSnapshot.getChildren())
                             {
                                 ReportModel reportModel = ds.getValue(ReportModel.class);
-                                reportModelList.add(reportModel);
+                                //reportModelList.add(reportModel);
+                                reverseList.add(reportModel);
                             }
 
-                            if (reportModelList.size()>0)
+                            if (reverseList.size()>0)
                             {
-                                adapter.notifyDataSetChanged();
-                                btn_clear.setVisibility(View.VISIBLE);
+                                //adapter.notifyDataSetChanged();
+                                tv_clear.setVisibility(View.VISIBLE);
+                                ReverseList(reverseList);
+
 
                             }else
                                 {
                                     progBar.setVisibility(View.GONE);
                                     ll_no_report.setVisibility(View.VISIBLE);
-                                    btn_clear.setVisibility(View.GONE);
+                                    tv_clear.setVisibility(View.GONE);
 
                                 }
 
@@ -143,7 +147,7 @@ public class Head_Manager_Fragment_Reports extends Fragment {
                             {
                                 progBar.setVisibility(View.GONE);
                                 ll_no_report.setVisibility(View.VISIBLE);
-                                btn_clear.setVisibility(View.GONE);
+                                tv_clear.setVisibility(View.GONE);
 
                             }
                     }
@@ -154,6 +158,16 @@ public class Head_Manager_Fragment_Reports extends Fragment {
                     }
                 });
 
+    }
+
+    private void ReverseList(List<ReportModel> reverseList) {
+
+        reportModelList.clear();
+        for (int i = reverseList.size()-1;i>=0;i--)
+        {
+            reportModelList.add(reverseList.get(i));
+        }
+        adapter.notifyDataSetChanged();
     }
 
 }

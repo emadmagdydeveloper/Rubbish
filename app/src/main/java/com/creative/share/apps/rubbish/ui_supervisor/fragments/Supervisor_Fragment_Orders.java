@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.creative.share.apps.rubbish.R;
 import com.creative.share.apps.rubbish.adapters.SupervisorOrderAdapter;
 import com.creative.share.apps.rubbish.models.OrderModel;
+import com.creative.share.apps.rubbish.models.UserModel;
+import com.creative.share.apps.rubbish.preferences.Preference;
 import com.creative.share.apps.rubbish.share.Common;
 import com.creative.share.apps.rubbish.ui_supervisor.SupervisorHomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,12 +45,17 @@ public class Supervisor_Fragment_Orders extends Fragment {
     private RecyclerView.LayoutManager manager;
     private SupervisorHomeActivity activity;
     private SupervisorOrderAdapter adapter;
-    private List<OrderModel> orderModelList;
+    private List<OrderModel> orderModelList,reverseList;
+    private TextView tv_clear;
     private LinearLayout ll_order;
     private int lastSelectedItem = -1;
     private DatabaseReference dRef;
     private List<String> emp_ids_list;
     private OrderModel orderModel;
+    private Preference preference;
+    private UserModel userModel;
+
+
 
 
     @Nullable
@@ -65,12 +73,16 @@ public class Supervisor_Fragment_Orders extends Fragment {
 
     private void initView(View view) {
 
+        reverseList = new ArrayList<>();
         emp_ids_list = new ArrayList<>();
         dRef = FirebaseDatabase.getInstance().getReference();
         orderModelList = new ArrayList<>();
         activity = (SupervisorHomeActivity) getActivity();
+        preference = Preference.newInstance();
+        userModel = preference.getUserData(activity);
 
         ll_order = view.findViewById(R.id.ll_order);
+        tv_clear = view.findViewById(R.id.tv_clear);
 
         progBar = view.findViewById(R.id.progBar);
         progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
@@ -86,6 +98,29 @@ public class Supervisor_Fragment_Orders extends Fragment {
         recView.setLayoutManager(manager);
         adapter = new SupervisorOrderAdapter(orderModelList,activity,this);
         recView.setAdapter(adapter);
+
+        tv_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+                dialog.setCancelable(true);
+                dialog.show();
+                dRef.child("Supervisor_Orders")
+                        .child(userModel.getUser_id())
+                        .removeValue(new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                orderModelList.clear();
+                                adapter.notifyDataSetChanged();
+                                tv_clear.setVisibility(View.GONE);
+                                ll_order.setVisibility(View.VISIBLE);
+                                dialog.dismiss();
+
+                            }
+                        });
+            }
+        });
+
         getOrders();
 
     }
@@ -93,11 +128,11 @@ public class Supervisor_Fragment_Orders extends Fragment {
     private void getOrders()
     {
 
-        dRef.child("Supervisor_Orders").addValueEventListener(new ValueEventListener() {
+        dRef.child("Supervisor_Orders").child(userModel.getUser_id()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                orderModelList.clear();
+                reverseList.clear();
                 if (dataSnapshot.getValue()!=null)
                 {
                     ll_order.setVisibility(View.GONE);
@@ -108,11 +143,21 @@ public class Supervisor_Fragment_Orders extends Fragment {
                         if (ds.getValue()!=null)
                         {
                             OrderModel orderModel = ds.getValue(OrderModel.class);
-                            orderModelList.add(orderModel);
+                            reverseList.add(orderModel);
                         }
                     }
 
-                    adapter.notifyDataSetChanged();
+                    if (reverseList.size()>0)
+                    {
+                        tv_clear.setVisibility(View.VISIBLE);
+                        ReverseList(reverseList);
+                    }else
+                        {
+                            tv_clear.setVisibility(View.GONE);
+
+                        }
+
+                    //adapter.notifyDataSetChanged();
 
                 }else
                     {
@@ -128,6 +173,15 @@ public class Supervisor_Fragment_Orders extends Fragment {
 
             }
         });
+    }
+
+    private void ReverseList(List<OrderModel> reverseList) {
+
+        for (int i= reverseList.size()-1;i>=0;i--)
+        {
+            orderModelList.add(reverseList.get(i));
+        }
+        adapter.notifyDataSetChanged();
     }
 
     public void setItemData(OrderModel orderModel, int position) {

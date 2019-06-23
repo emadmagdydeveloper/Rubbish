@@ -29,13 +29,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.creative.share.apps.rubbish.R;
+import com.creative.share.apps.rubbish.models.OrderModel;
 import com.creative.share.apps.rubbish.models.PlaceGeocodeData;
 import com.creative.share.apps.rubbish.models.PlaceMapDetailsData;
-import com.creative.share.apps.rubbish.models.OrderModel;
 import com.creative.share.apps.rubbish.models.UserModel;
 import com.creative.share.apps.rubbish.preferences.Preference;
 import com.creative.share.apps.rubbish.remote.Api;
 import com.creative.share.apps.rubbish.share.Common;
+import com.creative.share.apps.rubbish.tags.Tags;
 import com.creative.share.apps.rubbish.ui_clients.ClientHomeActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -62,12 +63,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -95,6 +101,7 @@ public class Fragment_Client_Send_Order extends Fragment implements OnMapReadyCa
     private float zoom = 15.6f;
     private String address="";
     private DatabaseReference dRef;
+    private List<String> supervisorIdsList;
 
 
     public static Fragment_Client_Send_Order newInstance()
@@ -111,6 +118,7 @@ public class Fragment_Client_Send_Order extends Fragment implements OnMapReadyCa
 
     private void initView(View view) {
 
+        supervisorIdsList = new ArrayList<>();
         dRef = FirebaseDatabase.getInstance().getReference();
         activity = (ClientHomeActivity) getActivity();
         current_language = Locale.getDefault().getLanguage();
@@ -167,8 +175,8 @@ public class Fragment_Client_Send_Order extends Fragment implements OnMapReadyCa
             edt_name.setError(null);
             edt_search.setError(null);
             Common.CloseKeyBoard(activity,edt_name);
-            SendOrder(m_name,address);
-
+            //SendOrder(m_name,address);
+            getAllSupervisorsIds(m_name,address);
         }else
             {
                 if (!TextUtils.isEmpty(m_name))
@@ -193,37 +201,82 @@ public class Fragment_Client_Send_Order extends Fragment implements OnMapReadyCa
             }
     }
 
-    private void SendOrder(String m_name, String address) {
+    private void getAllSupervisorsIds(final String m_name, final String address) {
+        dRef.child("Users")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue()!=null)
+                        {
+                            supervisorIdsList.clear();
+                            for (DataSnapshot ds :dataSnapshot.getChildren())
+                            {
+                                if (ds.getValue()!=null)
+                                {
+                                    UserModel userModel = ds.getValue(UserModel.class);
+                                    if (userModel!=null&&userModel.getUser_type()== Tags.USER_TYPE_SUPERVISOR)
+                                    {
+                                        supervisorIdsList.add(userModel.getUser_id());
+                                    }
+                                }
+
+                            }
+
+                            if (supervisorIdsList.size()>0)
+                            {
+                                SendOrder(m_name, address,supervisorIdsList);
+                            }else
+                                {
+                                    Toast.makeText(activity, getString(R.string.no_sv_to_receive_order), Toast.LENGTH_LONG).show();
+                                }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    private void SendOrder(String m_name, String address, List<String> supervisorIdsList) {
 
         final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
         dialog.setCancelable(true);
         dialog.show();
 
+
         String order_id = dRef.child("Supervisor_Orders").push().getKey();
         Calendar calendar = Calendar.getInstance();
         OrderModel orderModel = new OrderModel(userModel.getUser_id(),m_name,address,lat,lng,0,order_id,calendar.getTimeInMillis());
 
-        dRef.child("Supervisor_Orders").child(order_id).setValue(orderModel)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
-                        {
-                            dialog.dismiss();
-                            CreateSuccessDialog(activity,getString(R.string.order_sent_successfull));
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                dialog.dismiss();
+        for (String supervisor_id :supervisorIdsList)
+        {
+            dRef.child("Supervisor_Orders").child(supervisor_id).child(order_id).setValue(orderModel)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    dialog.dismiss();
+                    Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    return;
+                }
+            });
+        }
+
+        dialog.dismiss();
+        CreateSuccessDialog(activity,getString(R.string.order_sent_successfull));
+
+
     }
 
-    public  void CreateSuccessDialog(Context context, String msg)
+    private void CreateSuccessDialog(Context context, String msg)
     {
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setCancelable(true)

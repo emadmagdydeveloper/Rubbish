@@ -1,5 +1,6 @@
 package com.creative.share.apps.rubbish.ui_supervisor.fragments;
 
+import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +22,7 @@ import com.creative.share.apps.rubbish.adapters.SupervisorContactAdapter;
 import com.creative.share.apps.rubbish.models.ContactModel;
 import com.creative.share.apps.rubbish.models.UserModel;
 import com.creative.share.apps.rubbish.preferences.Preference;
+import com.creative.share.apps.rubbish.share.Common;
 import com.creative.share.apps.rubbish.ui_supervisor.SupervisorHomeActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,7 +39,9 @@ public class Supervisor_Fragment_Support extends Fragment {
     private RecyclerView recView;
     private RecyclerView.LayoutManager manager;
     private SupervisorHomeActivity activity;
-    private List<ContactModel> contactModelList;
+    private List<ContactModel> contactModelList,reverseList;
+    private TextView tv_clear;
+
     private SupervisorContactAdapter adapter;
     private LinearLayout ll_not;
     private UserModel userModel;
@@ -66,12 +71,14 @@ public class Supervisor_Fragment_Support extends Fragment {
 
     private void initView(View view) {
 
+        reverseList = new ArrayList<>();
         contactModelList = new ArrayList<>();
         dRef = FirebaseDatabase.getInstance().getReference();
         activity = (SupervisorHomeActivity) getActivity();
         preferences = Preference.newInstance();
         userModel = preferences.getUserData(activity);
         ll_not = view.findViewById(R.id.ll_not);
+        tv_clear = view.findViewById(R.id.tv_clear);
 
         progBar = view.findViewById(R.id.progBar);
         progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
@@ -80,11 +87,36 @@ public class Supervisor_Fragment_Support extends Fragment {
         recView.setLayoutManager(manager);
         adapter = new SupervisorContactAdapter(contactModelList,activity);
         recView.setAdapter(adapter);
-        getNotification();
+
+        tv_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+                dialog.setCancelable(true);
+                dialog.show();
+                dRef.child("Supervisor_Messages")
+                        .child(userModel.getUser_id())
+                        .removeValue(new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                contactModelList.clear();
+                                adapter.notifyDataSetChanged();
+                                tv_clear.setVisibility(View.GONE);
+                                ll_not.setVisibility(View.VISIBLE);
+                                dialog.dismiss();
+
+                            }
+                        });
+            }
+        });
+
+        getReports();
+
+
 
     }
 
-    private void getNotification() {
+    private void getReports() {
 
         dRef.child("Supervisor_Messages")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -95,16 +127,17 @@ public class Supervisor_Fragment_Support extends Fragment {
                             progBar.setVisibility(View.GONE);
                             ll_not.setVisibility(View.GONE);
 
-                            contactModelList.clear();
+                            reverseList.clear();
                             for (DataSnapshot ds :dataSnapshot.getChildren())
                             {
                                 ContactModel contactModel = ds.getValue(ContactModel.class);
-                                contactModelList.add(contactModel);
+                                reverseList.add(contactModel);
                             }
 
                             if (contactModelList.size()>0)
                             {
-                                adapter.notifyDataSetChanged();
+                                ReverseList(reverseList);
+                                //adapter.notifyDataSetChanged();
 
                             }else
                                 {
@@ -124,6 +157,17 @@ public class Supervisor_Fragment_Support extends Fragment {
 
                     }
                 });
+
+    }
+
+    private void ReverseList(List<ContactModel> reverseList) {
+
+        contactModelList.clear();
+        for (int i=reverseList.size()-1;i>=0;i--)
+        {
+            contactModelList.add(reverseList.get(i));
+        }
+        adapter.notifyDataSetChanged();
 
     }
 

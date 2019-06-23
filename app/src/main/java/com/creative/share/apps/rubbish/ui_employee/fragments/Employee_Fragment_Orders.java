@@ -1,5 +1,6 @@
 package com.creative.share.apps.rubbish.ui_employee.fragments;
 
+import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +22,7 @@ import com.creative.share.apps.rubbish.adapters.EmployeeOrderAdapter;
 import com.creative.share.apps.rubbish.models.OrderModel;
 import com.creative.share.apps.rubbish.models.UserModel;
 import com.creative.share.apps.rubbish.preferences.Preference;
+import com.creative.share.apps.rubbish.share.Common;
 import com.creative.share.apps.rubbish.ui_employee.EmployeeHomeActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,11 +40,12 @@ public class Employee_Fragment_Orders extends Fragment {
     private RecyclerView recView;
     private RecyclerView.LayoutManager manager;
     private EmployeeHomeActivity activity;
-    private List<OrderModel> orderModelList;
+    private List<OrderModel> orderModelList,reverseList;
     private EmployeeOrderAdapter adapter;
     private LinearLayout ll_order;
     private UserModel userModel;
     private Preference preferences;
+    private TextView tv_clear;
     private int lastSelectedItem = -1;
     private OrderModel orderModel;
     private String current_language;
@@ -63,11 +67,13 @@ public class Employee_Fragment_Orders extends Fragment {
 
     private void initView(View view) {
         dRef = FirebaseDatabase.getInstance().getReference();
+        reverseList = new ArrayList<>();
         orderModelList = new ArrayList<>();
         activity = (EmployeeHomeActivity) getActivity();
         current_language = Locale.getDefault().getLanguage();
         preferences = Preference.newInstance();
         userModel = preferences.getUserData(activity);
+        tv_clear = view.findViewById(R.id.tv_clear);
 
         ll_order = view.findViewById(R.id.ll_order);
 
@@ -80,6 +86,28 @@ public class Employee_Fragment_Orders extends Fragment {
         adapter = new EmployeeOrderAdapter(orderModelList,activity,this);
         recView.setAdapter(adapter);
 
+        tv_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+                dialog.setCancelable(true);
+                dialog.show();
+                dRef.child("Employee_Orders")
+                        .child(userModel.getUser_id())
+                        .removeValue(new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                orderModelList.clear();
+                                adapter.notifyDataSetChanged();
+                                tv_clear.setVisibility(View.GONE);
+                                ll_order.setVisibility(View.VISIBLE);
+                                dialog.dismiss();
+
+                            }
+                        });
+            }
+        });
+
         getOrders();
 
     }
@@ -90,7 +118,7 @@ public class Employee_Fragment_Orders extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                orderModelList.clear();
+                reverseList.clear();
                 if (dataSnapshot.getValue()!=null)
                 {
                     ll_order.setVisibility(View.GONE);
@@ -101,11 +129,18 @@ public class Employee_Fragment_Orders extends Fragment {
                         if (ds.getValue()!=null)
                         {
                             OrderModel orderModel = ds.getValue(OrderModel.class);
-                            orderModelList.add(orderModel);
+                            //orderModelList.add(orderModel);
+                            reverseList.add(orderModel);
+
                         }
                     }
 
-                    adapter.notifyDataSetChanged();
+                    if (reverseList.size()>0)
+                    {
+                        ReverseList(reverseList);
+                    }
+
+                    //adapter.notifyDataSetChanged();
 
                 }else
                 {
@@ -121,6 +156,16 @@ public class Employee_Fragment_Orders extends Fragment {
 
             }
         });
+    }
+
+    private void ReverseList(List<OrderModel> reverseList) {
+
+        orderModelList.clear();
+        for (int i = reverseList.size()-1;i>=0;i--)
+        {
+            orderModelList.add(reverseList.get(i));
+        }
+        adapter.notifyDataSetChanged();
     }
 
 

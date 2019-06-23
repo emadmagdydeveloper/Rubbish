@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_total"
         >
 
         <com.google.android.material.appbar.AppBarLayout
@@ -141,4 +142,18 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <Button
+        android:id="@+id/btn_total"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/btn_sign_up"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:text="@string/total2"
+        android:visibility="gone"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
