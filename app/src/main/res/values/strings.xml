@@ -95,6 +95,7 @@
     <string name="battery_content">battery content</string>
     <string name="ewaste_content">e_waste content</string>
     <string name="no_sv_to_receive_order">No supervisor available to receive your order</string>
+    <string name="edit_profile">Edit Profile</string>
 
 
     <string-array name="job_array">

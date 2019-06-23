@@ -177,7 +177,7 @@ public class Fragment_Profile extends Fragment {
             tv_name.setText(userModel.getName());
             tv_email.setText(userModel.getEmail());
             tv_address.setText(userModel.getAddress());
-            tv_phone.setText(userModel.getPhone());
+            tv_phone.setText(userModel.getPhone_code()+userModel.getPhone());
 
 
             if (userModel.getUser_type() == Tags.USER_TYPE_CLIENT)
@@ -213,4 +213,7 @@ public class Fragment_Profile extends Fragment {
         }
     }
 
+    public void updateUserData(UserModel userModel) {
+        updateUi(userModel);
+    }
 }

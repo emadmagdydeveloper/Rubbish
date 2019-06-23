@@ -6,6 +6,7 @@ public class UserModel implements Serializable {
 
     private String user_id;
     private String name;
+    private String phone_code;
     private String phone;
     private String address;
     private String email;
@@ -23,9 +24,11 @@ public class UserModel implements Serializable {
     public UserModel() {
     }
 
-    public UserModel(String user_id, String name, String phone, String address, String email, String user_username, String password, int city_id, double latitude, double longitude, double salary, int bonus, int user_type, String token_id, int active) {
+
+    public UserModel(String user_id, String name, String phone_code, String phone, String address, String email, String user_username, String password, int city_id, double latitude, double longitude, double salary, int bonus, int user_type, String token_id, int active) {
         this.user_id = user_id;
         this.name = name;
+        this.phone_code = phone_code;
         this.phone = phone;
         this.address = address;
         this.email = email;
@@ -55,6 +58,14 @@ public class UserModel implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPhone_code() {
+        return phone_code;
+    }
+
+    public void setPhone_code(String phone_code) {
+        this.phone_code = phone_code;
     }
 
     public String getPhone() {

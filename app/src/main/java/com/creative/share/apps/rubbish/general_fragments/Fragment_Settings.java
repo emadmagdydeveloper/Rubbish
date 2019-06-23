@@ -31,8 +31,8 @@ import java.util.Locale;
 public class Fragment_Settings extends Fragment {
     private AppCompatActivity activity;
     private LinearLayout ll_back;
-    private ConstraintLayout cons_terms, cons_rate, cons_about, cons_contact;
-    private ImageView arrow1, arrow2, arrow3, arrow4;
+    private ConstraintLayout cons_terms, cons_rate, cons_about, cons_contact,cons_edit;
+    private ImageView arrow1, arrow2, arrow3, arrow4,arrow5;
     private String current_language;
     private View view1;
     private Preference preference;
@@ -63,6 +63,7 @@ public class Fragment_Settings extends Fragment {
         arrow2 = view.findViewById(R.id.arrow2);
         arrow3 = view.findViewById(R.id.arrow3);
         arrow4 = view.findViewById(R.id.arrow4);
+        arrow5 = view.findViewById(R.id.arrow5);
 
 
         if (!current_language.equals("ar")) {
@@ -71,9 +72,11 @@ public class Fragment_Settings extends Fragment {
             arrow2.setRotation(180.0f);
             arrow3.setRotation(180.0f);
             arrow4.setRotation(180.0f);
+            arrow5.setRotation(180.0f);
 
 
         }
+
 
 
         view1 = view.findViewById(R.id.view);
@@ -82,6 +85,7 @@ public class Fragment_Settings extends Fragment {
         cons_rate = view.findViewById(R.id.cons_rate);
         cons_about = view.findViewById(R.id.cons_about);
         cons_contact = view.findViewById(R.id.cons_contact);
+        cons_edit = view.findViewById(R.id.cons_edit);
 
 
         cons_rate.setOnClickListener(new View.OnClickListener() {
@@ -237,6 +241,78 @@ public class Fragment_Settings extends Fragment {
             }
         });
 
+
+        cons_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (activity instanceof ClientHomeActivity)
+                {
+                    ClientHomeActivity clientHomeActivity = (ClientHomeActivity) activity;
+                    clientHomeActivity.DisplayFragmentEditProfile();
+
+                }else if (activity instanceof EmployeeHomeActivity)
+                {
+                    EmployeeHomeActivity employeeHomeActivity = (EmployeeHomeActivity) activity;
+                    employeeHomeActivity.DisplayFragmentEditProfile();
+
+                }
+                else if (activity instanceof SupervisorHomeActivity)
+                {
+                    SupervisorHomeActivity supervisorHomeActivity = (SupervisorHomeActivity) activity;
+                    supervisorHomeActivity.DisplayFragmentEditProfile();
+
+                }
+
+                else if (activity instanceof FinancialHomeActivity)
+                {
+                    FinancialHomeActivity financialHomeActivity = (FinancialHomeActivity) activity;
+                    financialHomeActivity.DisplayFragmentEditProfile();
+
+                }
+                else if (activity instanceof HeadMangerHomeActivity)
+                {
+                    HeadMangerHomeActivity headMangerHomeActivity = (HeadMangerHomeActivity) activity;
+                    headMangerHomeActivity.DisplayFragmentEditProfile();
+
+                }
+            }
+        });
+
+        arrow5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (activity instanceof ClientHomeActivity)
+                {
+                    ClientHomeActivity clientHomeActivity = (ClientHomeActivity) activity;
+                    clientHomeActivity.Back();
+
+                }else if (activity instanceof EmployeeHomeActivity)
+                {
+                    EmployeeHomeActivity employeeHomeActivity = (EmployeeHomeActivity) activity;
+                    employeeHomeActivity.Back();
+
+                }
+                else if (activity instanceof SupervisorHomeActivity)
+                {
+                    SupervisorHomeActivity supervisorHomeActivity = (SupervisorHomeActivity) activity;
+                    supervisorHomeActivity.Back();
+
+                }
+
+                else if (activity instanceof FinancialHomeActivity)
+                {
+                    FinancialHomeActivity financialHomeActivity = (FinancialHomeActivity) activity;
+                    financialHomeActivity.Back();
+
+                }
+                else if (activity instanceof HeadMangerHomeActivity)
+                {
+                    HeadMangerHomeActivity headMangerHomeActivity = (HeadMangerHomeActivity) activity;
+                    headMangerHomeActivity.Back();
+
+                }
+            }
+        });
 
         updateUI();
 

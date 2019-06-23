@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import com.creative.share.apps.rubbish.R;
 import com.creative.share.apps.rubbish.activity_sign_in_sign_up.SignInActivity;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Contact_Us;
+import com.creative.share.apps.rubbish.general_fragments.Fragment_Edit_Profile;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Profile;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Settings;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Terms_Condition;
@@ -33,6 +34,8 @@ public class HeadMangerHomeActivity extends AppCompatActivity {
     private Fragment_Contact_Us fragment_contact_us;
     private Head_Manager_Fragment_Reports head_manager_fragment_reports;
     private Fragment_Head_Manager_User_Data fragment_head_manager_user_data;
+    private Fragment_Edit_Profile fragment_edit_profile;
+
     ///////////////////////////////////////////
 
 
@@ -244,7 +247,34 @@ public class HeadMangerHomeActivity extends AppCompatActivity {
             head_manager_fragment_search.deleteUser();
         }
     }
+    public void DisplayFragmentEditProfile()
+    {
 
+        fragment_count +=1;
+
+        fragment_edit_profile = Fragment_Edit_Profile.newInstance();
+
+
+
+        if (fragment_edit_profile.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_edit_profile).commit();
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_edit_profile, "fragment_edit_profile").addToBackStack("fragment_edit_profile").commit();
+
+        }
+
+
+    }
+
+    public void UpdateUserData(UserModel userModel)
+    {
+        this.userModel = userModel;
+        preference.create_update_user_data(this,userModel);
+        if (fragment_profile!=null&&fragment_profile.isAdded())
+        {
+            fragment_profile.updateUserData(userModel);
+        }
+    }
     public void NavigateToSignInActivity(boolean isSignIn) {
 
         Intent intent = new Intent(this, SignInActivity.class);

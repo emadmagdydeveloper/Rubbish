@@ -298,8 +298,7 @@ public class Fragment_Signup extends Fragment implements OnCountryPickerListener
                         if (task.isSuccessful())
                         {
                             String user_id = task.getResult().getUser().getUid();
-                            String phone = code+m_phone;
-                            UserModel userModel = new UserModel(user_id,m_name,phone,selectedLocation.getAddress(),m_email,m_user_name,m_password,0,selectedLocation.getLat(),selectedLocation.getLng(),0,0, Tags.USER_TYPE_CLIENT,"",1);
+                            UserModel userModel = new UserModel(user_id,m_name,code,m_phone,selectedLocation.getAddress(),m_email,m_user_name,m_password,0,selectedLocation.getLat(),selectedLocation.getLng(),0,0, Tags.USER_TYPE_CLIENT,"",1);
                             SaveUserData(userModel,dialog);
                         }
                     }

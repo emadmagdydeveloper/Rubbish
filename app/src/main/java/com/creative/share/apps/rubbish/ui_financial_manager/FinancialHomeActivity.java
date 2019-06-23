@@ -15,6 +15,7 @@ import com.creative.share.apps.rubbish.R;
 import com.creative.share.apps.rubbish.activity_sign_in_sign_up.SignInActivity;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Account_Deactivated;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Contact_Us;
+import com.creative.share.apps.rubbish.general_fragments.Fragment_Edit_Profile;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Profile;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Settings;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Terms_Condition;
@@ -45,6 +46,8 @@ public class FinancialHomeActivity extends AppCompatActivity {
     private Fragment_Contact_Us fragment_contact_us;
     private Fragment_Financial_User_Data fragment_financial_user_data;
     private Fragment_Account_Deactivated fragment_account_deactivated;
+    private Fragment_Edit_Profile fragment_edit_profile;
+
 
     ///////////////////////////////////////////
     private View root;
@@ -315,6 +318,33 @@ public class FinancialHomeActivity extends AppCompatActivity {
 
     }
 
+    public void DisplayFragmentEditProfile()
+    {
+
+        fragment_count +=1;
+
+        fragment_edit_profile = Fragment_Edit_Profile.newInstance();
+
+
+
+        if (fragment_edit_profile.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_edit_profile).commit();
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_edit_profile, "fragment_edit_profile").addToBackStack("fragment_edit_profile").commit();
+
+        }
+
+
+    }
+    public void UpdateUserData(UserModel userModel)
+    {
+        this.userModel = userModel;
+        preference.create_update_user_data(this,userModel);
+        if (fragment_profile!=null&&fragment_profile.isAdded())
+        {
+            fragment_profile.updateUserData(userModel);
+        }
+    }
 
     public void NavigateToSignInActivity(boolean isSignIn) {
 

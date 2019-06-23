@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import com.creative.share.apps.rubbish.R;
 import com.creative.share.apps.rubbish.activity_sign_in_sign_up.SignInActivity;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Contact_Us;
+import com.creative.share.apps.rubbish.general_fragments.Fragment_Edit_Profile;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Profile;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Settings;
 import com.creative.share.apps.rubbish.general_fragments.Fragment_Terms_Condition;
@@ -48,6 +49,7 @@ public class ClientHomeActivity extends AppCompatActivity {
     private Fragment_Terms_Condition fragment_terms_condition;
     private Fragment_Contact_Us fragment_contact_us;
     private Fragment_Client_Send_Order fragment_client_send_order;
+    private Fragment_Edit_Profile fragment_edit_profile;
 
     private UserModel userModel;
     private Preference preference;
@@ -312,6 +314,35 @@ public class ClientHomeActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void DisplayFragmentEditProfile()
+    {
+
+        fragment_count +=1;
+
+        fragment_edit_profile = Fragment_Edit_Profile.newInstance();
+
+
+
+        if (fragment_edit_profile.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_edit_profile).commit();
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_edit_profile, "fragment_edit_profile").addToBackStack("fragment_edit_profile").commit();
+
+        }
+
+
+    }
+
+    public void UpdateUserData(UserModel userModel)
+    {
+        this.userModel = userModel;
+        preference.create_update_user_data(this,userModel);
+        if (fragment_profile!=null&&fragment_profile.isAdded())
+        {
+            fragment_profile.updateUserData(userModel);
+        }
     }
 
 
