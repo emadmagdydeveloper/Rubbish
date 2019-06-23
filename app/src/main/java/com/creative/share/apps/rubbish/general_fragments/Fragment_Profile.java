@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.creative.share.apps.rubbish.R;
+import com.creative.share.apps.rubbish.tags.Tags;
 import com.creative.share.apps.rubbish.ui_clients.ClientHomeActivity;
 import com.creative.share.apps.rubbish.ui_employee.EmployeeHomeActivity;
 import com.creative.share.apps.rubbish.models.UserModel;
@@ -20,12 +21,13 @@ import com.creative.share.apps.rubbish.ui_financial_manager.FinancialHomeActivit
 import com.creative.share.apps.rubbish.ui_head_manager.HeadMangerHomeActivity;
 import com.creative.share.apps.rubbish.ui_supervisor.SupervisorHomeActivity;
 import com.google.android.material.appbar.AppBarLayout;
+import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
 
 
 public class Fragment_Profile extends Fragment {
-    private ImageView image,image_setting;
+    private ImageView image,image_setting,image_cover;
     private TextView tv_name,tv_email,tv_phone,tv_address;
     private LinearLayout ll_logout;
     private AppCompatActivity activity;
@@ -59,6 +61,8 @@ public class Fragment_Profile extends Fragment {
         app_bar = view.findViewById(R.id.app_bar);
 
         image_setting = view.findViewById(R.id.image_setting);
+
+        image_cover = view.findViewById(R.id.image_cover);
 
         image = view.findViewById(R.id.image);
         tv_name = view.findViewById(R.id.tv_name);
@@ -174,6 +178,37 @@ public class Fragment_Profile extends Fragment {
             tv_email.setText(userModel.getEmail());
             tv_address.setText(userModel.getAddress());
             tv_phone.setText(userModel.getPhone());
+
+
+            if (userModel.getUser_type() == Tags.USER_TYPE_CLIENT)
+            {
+                Picasso.with(activity).load(R.drawable.user_cover).fit().into(image_cover);
+                Picasso.with(activity).load(R.drawable.employee_user_image).fit().into(image);
+
+            }else if (userModel.getUser_type() == Tags.USER_TYPE_EMPLOYEE)
+            {
+                Picasso.with(activity).load(R.drawable.employee_cover).fit().into(image_cover);
+                Picasso.with(activity).load(R.drawable.employee_user_image).fit().into(image);
+
+            }
+            else if (userModel.getUser_type() == Tags.USER_TYPE_SUPERVISOR)
+            {
+                Picasso.with(activity).load(R.drawable.supervisor_cover).fit().into(image_cover);
+                Picasso.with(activity).load(R.drawable.supervisor_image).fit().into(image);
+
+            }
+            else if (userModel.getUser_type() == Tags.USER_TYPE_FINANCIAL_MANAGER)
+            {
+                Picasso.with(activity).load(R.drawable.financial_cover).fit().into(image_cover);
+                Picasso.with(activity).load(R.drawable.financial_image).fit().into(image);
+
+            }
+            else if (userModel.getUser_type() == Tags.USER_TYPE_HEAD_MANAGER)
+            {
+                Picasso.with(activity).load(R.drawable.head_cover).fit().into(image_cover);
+                Picasso.with(activity).load(R.drawable.head_image).fit().into(image);
+
+            }
 
         }
     }

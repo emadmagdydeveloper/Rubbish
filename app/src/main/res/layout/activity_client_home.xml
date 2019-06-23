@@ -11,4 +11,6 @@
         android:id="@+id/fragment_app_container"
 
         />
+
+    <include layout="@layout/client_home_bottom_sheet"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

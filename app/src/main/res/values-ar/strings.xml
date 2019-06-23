@@ -85,6 +85,16 @@
     <string name="sorry">نأسف لسيادتكم</string>
     <string name="your_account_deactivated">تم تعطيل حسابك</string>
     <string name="clear">حذف الكل</string>
+    <string name="organic">عضوي</string>
+    <string name="battery">بطارية</string>
+    <string name="e_waste">نفايات</string>
+
+    <string name="paper_content">المحتوى</string>
+    <string name="metal_content"> المحتوى</string>
+    <string name="organic_content">المحتوى</string>
+    <string name="plastic_content">المحتوى</string>
+    <string name="battery_content">المحتوى</string>
+    <string name="ewaste_content">المحتوى</string>
 
     <string-array name="job_array">
         <item>موظف</item>

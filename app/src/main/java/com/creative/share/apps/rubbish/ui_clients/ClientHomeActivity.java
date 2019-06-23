@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,11 +28,13 @@ import com.creative.share.apps.rubbish.ui_clients.fragments.Client_Fragment_Home
 import com.creative.share.apps.rubbish.ui_clients.fragments.Client_Fragment_Notifications;
 import com.creative.share.apps.rubbish.ui_clients.fragments.Client_Fragment_main;
 import com.creative.share.apps.rubbish.ui_clients.fragments.Fragment_Client_Send_Order;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
+import java.util.Locale;
 
 public class ClientHomeActivity extends AppCompatActivity {
 
@@ -50,6 +53,12 @@ public class ClientHomeActivity extends AppCompatActivity {
     private Preference preference;
     private FirebaseAuth mAuth;
     private DatabaseReference dRef;
+    /////////////////////////////////////
+    private BottomSheetBehavior behavior;
+    private ImageView arrow;
+    private TextView tv_title,tv_content;
+    private View root;
+    private String current_language;
 
 
 
@@ -73,6 +82,60 @@ public class ClientHomeActivity extends AppCompatActivity {
             DisplayFragmentHome();
             DisplayFragmentMain();
         }
+        initView();
+
+    }
+
+    private void initView() {
+        current_language = Locale.getDefault().getLanguage();
+        root = findViewById(R.id.root);
+        arrow = findViewById(R.id.arrow);
+        tv_title = findViewById(R.id.tv_title);
+        tv_content = findViewById(R.id.tv_content);
+
+        if (current_language.equals("ar"))
+        {
+            arrow.setRotation(180.0f);
+        }
+
+        behavior = BottomSheetBehavior.from(root);
+
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+                if (i == BottomSheetBehavior.STATE_DRAGGING)
+                {
+                    openSheet();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
+
+        arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeSheet();
+            }
+        });
+    }
+
+    public void setDataForSheet(String title,String content)
+    {
+        tv_title.setText(title);
+        tv_content.setText(content);
+        openSheet();
+    }
+
+    private void openSheet() {
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+    }
+    private void closeSheet() {
+        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
     }
 
@@ -293,24 +356,33 @@ public class ClientHomeActivity extends AppCompatActivity {
     }
 
     public void Back() {
-        if (fragment_count > 1) {
-            super.onBackPressed();
-            fragment_count -= 1;
-        } else {
-            if (client_fragment_main!=null&&client_fragment_main.isAdded()&&!client_fragment_main.isVisible())
+
+        if (behavior.getState()==BottomSheetBehavior.STATE_EXPANDED)
+        {
+            closeSheet();
+        }else
             {
-                DisplayFragmentMain();
-            }else
-            {
-                if (userModel!=null)
-                {
-                    finish();
-                }else
-                {
-                    NavigateToSignInActivity(true);
+                if (fragment_count > 1) {
+                    super.onBackPressed();
+                    fragment_count -= 1;
+                } else {
+                    if (client_fragment_main!=null&&client_fragment_main.isAdded()&&!client_fragment_main.isVisible())
+                    {
+                        DisplayFragmentMain();
+                    }else
+                    {
+                        if (userModel!=null)
+                        {
+                            finish();
+                        }else
+                        {
+                            NavigateToSignInActivity(true);
+                        }
+                    }
                 }
+
             }
-        }
+
 
     }
 

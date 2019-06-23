@@ -84,6 +84,18 @@
     <string name="sorry">Sorry</string>
     <string name="your_account_deactivated">Your account deactivated</string>
     <string name="clear">clear</string>
+    <string name="organic">Organic</string>
+    <string name="battery">Battery</string>
+    <string name="e_waste">E-Waste</string>
+
+    <string name="paper_content">paper content</string>
+    <string name="metal_content"> metal content</string>
+    <string name="organic_content">organic content</string>
+    <string name="plastic_content">plastic content</string>
+    <string name="battery_content">battery content</string>
+    <string name="ewaste_content">e_waste content</string>
+
+
     <string-array name="job_array">
         <item>Employee</item>
         <item>Supervisor</item>

@@ -26,7 +26,7 @@ public class Client_Fragment_main extends Fragment {
     private ClientHomeActivity activity;
     private Slider_Adapter slider_adapter;
     private List<Integer> sliderImageList;
-    private LinearLayout ll1,ll2,ll3;
+    private LinearLayout ll1,ll2,ll3,ll4,ll5,ll6;
     private TimerTask timerTask;
     private Timer timer;
     public static Client_Fragment_main newInstance() {
@@ -50,6 +50,9 @@ public class Client_Fragment_main extends Fragment {
         ll1 = view.findViewById(R.id.ll1);
         ll2 = view.findViewById(R.id.ll2);
         ll3 = view.findViewById(R.id.ll3);
+        ll4 = view.findViewById(R.id.ll4);
+        ll5 = view.findViewById(R.id.ll5);
+        ll6 = view.findViewById(R.id.ll6);
 
         tab.setupWithViewPager(pager);
         updateUI();
@@ -58,18 +61,43 @@ public class Client_Fragment_main extends Fragment {
         ll1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activity.setDataForSheet(getString(R.string.papers),getString(R.string.paper_content));
             }
         });
 
         ll2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activity.setDataForSheet(getString(R.string.metal),getString(R.string.metal_content));
 
             }
         });
         ll3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activity.setDataForSheet(getString(R.string.organic),getString(R.string.organic_content));
+
+            }
+        });
+
+        ll4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.setDataForSheet(getString(R.string.battery),getString(R.string.battery_content));
+
+            }
+        });
+        ll5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.setDataForSheet(getString(R.string.e_waste),getString(R.string.ewaste_content));
+
+            }
+        });
+        ll6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.setDataForSheet(getString(R.string.plastics),getString(R.string.plastic_content));
 
             }
         });
