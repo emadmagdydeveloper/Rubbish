@@ -33,7 +33,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        preference = Preference.newInstance();
         fl = findViewById(R.id.fl);
         animation = AnimationUtils.loadAnimation(this,R.anim.alpha);
         fl.startAnimation(animation);
@@ -46,6 +45,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                preference = Preference.newInstance();
 
                 String session = preference.getSession(SplashActivity.this);
                 if (session.equals(Tags.SESSION_LOGIN))

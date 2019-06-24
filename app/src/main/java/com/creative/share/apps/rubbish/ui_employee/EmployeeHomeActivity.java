@@ -332,6 +332,8 @@ public class EmployeeHomeActivity extends AppCompatActivity {
     public void Logout() {
 
         mAuth.signOut();
+        userModel = null;
+        preference.create_update_user_data(this,null);
         preference.create_update_session(this, Tags.SESSION_LOGOUT);
         NavigateToSignInActivity(true);
     }
