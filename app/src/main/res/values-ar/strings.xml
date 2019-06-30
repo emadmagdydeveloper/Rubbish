@@ -97,6 +97,18 @@
     <string name="ewaste_content">المحتوى</string>
     <string name="no_sv_to_receive_order">عفوا لا يوجد مشرفين لاستقبال طلبك.</string>
     <string name="edit_profile">تعديل الملف الشخصي</string>
+    <string name="upload_image">تحميل صورة</string>
+    <string name="select_a_picture_to_upload">إختر صورة لرفعها</string>
+    <string name="camera">الكاميرا</string>
+    <string name="gallery">البوم الصور</string>
+    <string name="perm_image_denied">قم بالسماح للطبيق للوصول للصور</string>
+    <string name="forget_password">إستعادة كلمة المرور</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+    <string name="reset">إستعادة كلمة المرور</string>
+    <string name="forget_password2">نسيت كلمة المرور ؟</string>
+    <string name="we_will_send_link">سنقوم بإرسال رابط على البريد الالكتروني لاستعادة كلمة المرور.</string>
+    <string name="view_on_map">إطلع على الخريطة</string>
+    <string name="edit">تعديل</string>
 
     <string-array name="job_array">
         <item>موظف</item>

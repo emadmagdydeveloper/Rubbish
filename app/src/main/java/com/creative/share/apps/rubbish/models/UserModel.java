@@ -9,8 +9,9 @@ public class UserModel implements Serializable {
     private String phone_code;
     private String phone;
     private String address;
+    private String image;
+    private String cover;
     private String email;
-    private String user_username;
     private String password;
     private int city_id;
     private double latitude;
@@ -25,14 +26,15 @@ public class UserModel implements Serializable {
     }
 
 
-    public UserModel(String user_id, String name, String phone_code, String phone, String address, String email, String user_username, String password, int city_id, double latitude, double longitude, double salary, int bonus, int user_type, String token_id, int active) {
+    public UserModel(String user_id, String name, String phone_code, String phone, String address, String image, String cover, String email, String password, int city_id, double latitude, double longitude, double salary, int bonus, int user_type, String token_id, int active) {
         this.user_id = user_id;
         this.name = name;
         this.phone_code = phone_code;
         this.phone = phone;
         this.address = address;
+        this.image = image;
+        this.cover = cover;
         this.email = email;
-        this.user_username = user_username;
         this.password = password;
         this.city_id = city_id;
         this.latitude = latitude;
@@ -84,20 +86,28 @@ public class UserModel implements Serializable {
         this.address = address;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUser_username() {
-        return user_username;
-    }
-
-    public void setUser_username(String user_username) {
-        this.user_username = user_username;
     }
 
     public String getPassword() {

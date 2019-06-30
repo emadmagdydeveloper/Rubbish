@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:allowBackup="true"
@@ -38,7 +39,9 @@
         <activity android:name=".activity_map.MapActivity"></activity>
         <activity android:name=".ui_clients.ClientHomeActivity" />
         <activity android:name=".ui_supervisor.SupervisorHomeActivity"/>
-        <activity android:name=".activity_sign_in_sign_up.SignInActivity" />
+        <activity android:name=".activity_sign_in_sign_up.SignInActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            />
         <activity android:name=".activity_splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

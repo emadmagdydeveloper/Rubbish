@@ -4,7 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +41,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Fragment_Login extends Fragment {
     private Button btn_sign_in,btn_sign_up;
-    private TextView tv_skip;
-    private EditText edt_user_name, edt_password;
+    private TextView tv_skip,tv_forget_password;
+    private EditText edt_email, edt_password;
     private SignInActivity activity;
     private Preference preferences;
     private FirebaseAuth mAuth;
@@ -72,7 +72,9 @@ public class Fragment_Login extends Fragment {
         btn_sign_in = view.findViewById(R.id.btn_sign_in);
         btn_sign_up = view.findViewById(R.id.btn_sign_up);
         tv_skip = view.findViewById(R.id.tv_skip);
-        edt_user_name = view.findViewById(R.id.edt_user_name);
+        tv_forget_password = view.findViewById(R.id.tv_forget_password);
+
+        edt_email = view.findViewById(R.id.edt_email);
         edt_password = view.findViewById(R.id.edt_password);
 
         btn_sign_up.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +91,13 @@ public class Fragment_Login extends Fragment {
             }
         });
 
+        tv_forget_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.DisplayFragmentForgetPassword();
+            }
+        });
+
         btn_sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,24 +107,27 @@ public class Fragment_Login extends Fragment {
     }
 
     private void checkData() {
-        String m_user_name = edt_user_name.getText().toString().trim();
+        String m_email = edt_email.getText().toString().trim();
         String m_password = edt_password.getText().toString().trim();
 
-        if (!TextUtils.isEmpty(m_user_name) &&
+        if (!TextUtils.isEmpty(m_email) &&
+                Patterns.EMAIL_ADDRESS.matcher(m_email).matches()&&
                 !TextUtils.isEmpty(m_password)
         ) {
-            edt_user_name.setError(null);
+            edt_email.setError(null);
             edt_password.setError(null);
-            Common.CloseKeyBoard(activity, edt_user_name);
-            Login(m_user_name, m_password);
+            Common.CloseKeyBoard(activity, edt_email);
+            Login(m_email, m_password);
         } else {
 
 
-            if (TextUtils.isEmpty(m_user_name)) {
-                edt_user_name.setError(getString(R.string.field_req));
+            if (TextUtils.isEmpty(m_email)) {
+                edt_email.setError(getString(R.string.field_req));
 
-            } else {
-                edt_user_name.setError(null);
+            }else if (!Patterns.EMAIL_ADDRESS.matcher(m_email).matches()){
+                edt_email.setError(getString(R.string.inv_email));
+            }else {
+                edt_email.setError(null);
 
             }
 
@@ -129,18 +141,17 @@ public class Fragment_Login extends Fragment {
         }
     }
 
-    private void Login(String m_user_name, String m_password) {
+    private void Login(String m_email, String m_password) {
         final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
 
-        mAuth.signInWithEmailAndPassword(m_user_name+"@rubbish.com", m_password)
+        mAuth.signInWithEmailAndPassword(m_email, m_password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful())
                         {
-                            Log.e("1","1");
                             String user_id = task.getResult().getUser().getUid();
                             getUserData(user_id,dialog);
                         }

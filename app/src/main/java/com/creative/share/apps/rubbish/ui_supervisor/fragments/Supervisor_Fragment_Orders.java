@@ -128,11 +128,12 @@ public class Supervisor_Fragment_Orders extends Fragment {
     private void getOrders()
     {
 
-        dRef.child("Supervisor_Orders").child(userModel.getUser_id()).addValueEventListener(new ValueEventListener() {
+        dRef.child("Supervisor_Orders").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 reverseList.clear();
+                orderModelList.clear();
                 if (dataSnapshot.getValue()!=null)
                 {
                     ll_order.setVisibility(View.GONE);
@@ -189,6 +190,7 @@ public class Supervisor_Fragment_Orders extends Fragment {
         {
             lastSelectedItem = position;
             this.orderModel = orderModel;
+
             getAllEmployeeIds();
         }
     }

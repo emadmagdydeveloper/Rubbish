@@ -3,22 +3,27 @@ package com.creative.share.apps.rubbish.ui_employee.fragments;
 import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.creative.share.apps.rubbish.R;
 import com.creative.share.apps.rubbish.adapters.EmployeeOrderAdapter;
+import com.creative.share.apps.rubbish.adapters.RecyclerviewItemTouch;
 import com.creative.share.apps.rubbish.models.OrderModel;
 import com.creative.share.apps.rubbish.models.UserModel;
 import com.creative.share.apps.rubbish.preferences.Preference;
@@ -32,9 +37,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class Employee_Fragment_Orders extends Fragment {
+public class Employee_Fragment_Orders extends Fragment implements RecyclerviewItemTouch.SwipeListener {
 
     private ProgressBar progBar;
     private RecyclerView recView;
@@ -46,9 +50,6 @@ public class Employee_Fragment_Orders extends Fragment {
     private UserModel userModel;
     private Preference preferences;
     private TextView tv_clear;
-    private int lastSelectedItem = -1;
-    private OrderModel orderModel;
-    private String current_language;
     private DatabaseReference dRef;
 
 
@@ -70,7 +71,6 @@ public class Employee_Fragment_Orders extends Fragment {
         reverseList = new ArrayList<>();
         orderModelList = new ArrayList<>();
         activity = (EmployeeHomeActivity) getActivity();
-        current_language = Locale.getDefault().getLanguage();
         preferences = Preference.newInstance();
         userModel = preferences.getUserData(activity);
         tv_clear = view.findViewById(R.id.tv_clear);
@@ -85,6 +85,8 @@ public class Employee_Fragment_Orders extends Fragment {
         recView.setLayoutManager(manager);
         adapter = new EmployeeOrderAdapter(orderModelList,activity,this);
         recView.setAdapter(adapter);
+        ItemTouchHelper.SimpleCallback simpleCallback = new RecyclerviewItemTouch(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT,this);
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recView);
 
         tv_clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,8 +173,70 @@ public class Employee_Fragment_Orders extends Fragment {
 
     public void setItemData(OrderModel orderModel, int position) {
 
-        this.lastSelectedItem =position;
-        this.orderModel = orderModel;
         activity.DisplayFragmentOrderDetails(orderModel);
+    }
+
+    @Override
+    public void onSwipe(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        OrderModel orderModel = orderModelList.get(position);
+        CreateDeleteAlertDialog(orderModel,position);
+    }
+
+    private void CreateDeleteAlertDialog(final OrderModel orderModel, final int position) {
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setCancelable(true)
+                .create();
+
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_delete,null);
+        Button btn_delete = view.findViewById(R.id.btn_delete);
+        Button btn_cancel = view.findViewById(R.id.btn_cancel);
+
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                adapter.notifyDataSetChanged();
+                DeleteOrder(orderModel,position);
+
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                adapter.notifyDataSetChanged();
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations=R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setView(view);
+        dialog.show();
+    }
+
+    private void DeleteOrder(OrderModel orderModel, final int position) {
+
+        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        dRef.child("Employee_Orders").child(userModel.getUser_id()).child(orderModel.getOrder_id())
+                .removeValue(new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+
+                        orderModelList.remove(position);
+                        adapter.notifyItemRemoved(position);
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog.dismiss();
+                                    }
+                                },500);
+                    }
+                });
     }
 }

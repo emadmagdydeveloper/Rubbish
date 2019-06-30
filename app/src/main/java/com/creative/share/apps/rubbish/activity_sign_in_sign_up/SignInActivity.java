@@ -3,22 +3,29 @@ package com.creative.share.apps.rubbish.activity_sign_in_sign_up;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.creative.share.apps.rubbish.R;
-import com.creative.share.apps.rubbish.ui_clients.ClientHomeActivity;
-import com.creative.share.apps.rubbish.models.UserModel;
-import com.creative.share.apps.rubbish.preferences.Preference;
+import com.creative.share.apps.rubbish.activity_sign_in_sign_up.fragments.Fragment_Forget_Password;
 import com.creative.share.apps.rubbish.activity_sign_in_sign_up.fragments.Fragment_Login;
 import com.creative.share.apps.rubbish.activity_sign_in_sign_up.fragments.Fragment_Signup;
+import com.creative.share.apps.rubbish.models.UserModel;
+import com.creative.share.apps.rubbish.preferences.Preference;
 import com.creative.share.apps.rubbish.tags.Tags;
+import com.creative.share.apps.rubbish.ui_clients.ClientHomeActivity;
+
+import java.util.List;
 
 public class SignInActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
     private Fragment_Login fragmentLogin;
     private Fragment_Signup fragmentSignup;
+    private Fragment_Forget_Password fragment_forget_password;
 
     private int fragment_counter = 0;
     private Preference preferences;
@@ -96,6 +103,21 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
+    public void DisplayFragmentForgetPassword()
+    {
+
+        fragment_counter += 1;
+
+        if (fragment_forget_password == null) {
+            fragment_forget_password = Fragment_Forget_Password.newInstance();
+        }
+        if (fragment_forget_password.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_forget_password).commit();
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_forget_password, "fragment_forget_password").addToBackStack("fragment_forget_password").commit();
+        }
+    }
+
     public void NavigateToHomeActivity(int type)
     {
         if (type ==Tags.USER_TYPE_CLIENT||type ==0)
@@ -131,6 +153,26 @@ public class SignInActivity extends AppCompatActivity {
         } else {
             fragment_counter -= 1;
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<Fragment> fragmentList = fragmentManager.getFragments();
+        for (Fragment fragment :fragmentList)
+        {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        List<Fragment> fragmentList = fragmentManager.getFragments();
+        for (Fragment fragment :fragmentList)
+        {
+            fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

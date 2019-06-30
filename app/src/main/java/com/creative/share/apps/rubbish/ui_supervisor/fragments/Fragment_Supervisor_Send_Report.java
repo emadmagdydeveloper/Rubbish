@@ -177,7 +177,7 @@ public class Fragment_Supervisor_Send_Report extends Fragment {
 
         Calendar calendar = Calendar.getInstance();
 
-        ReportModel reportModel = new ReportModel(report_id,supervisorModel.getUser_id(),m_supervisor_name,employeeModel.getUser_id(),m_employee_name,m_report,calendar.getTimeInMillis());
+        ReportModel reportModel = new ReportModel(report_id,supervisorModel.getUser_id(),m_supervisor_name,supervisorModel.getImage(),employeeModel.getUser_id(),m_employee_name,m_report,calendar.getTimeInMillis());
 
         dRef.child(report_id)
                 .setValue(reportModel)

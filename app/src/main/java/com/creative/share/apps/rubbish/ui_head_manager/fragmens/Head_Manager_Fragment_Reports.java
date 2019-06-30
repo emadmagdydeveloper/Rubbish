@@ -121,6 +121,8 @@ public class Head_Manager_Fragment_Reports extends Fragment {
                             ll_no_report.setVisibility(View.GONE);
 
                             reverseList.clear();
+                            reportModelList.clear();
+
                             for (DataSnapshot ds :dataSnapshot.getChildren())
                             {
                                 ReportModel reportModel = ds.getValue(ReportModel.class);

@@ -47,11 +47,17 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:18.0.0'
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-auth:18.0.0'
-    implementation 'com.google.firebase:firebase-messaging:19.0.0'
-    implementation 'com.google.android.gms:play-services-places:16.1.0'
-    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.firebase:firebase-messaging:19.0.1'
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.firebase:firebase-storage:18.0.0'
+
     implementation 'com.google.maps.android:android-maps-utils:0.5'
     implementation 'com.github.mukeshsolanki:country-picker-android:2.0.1'
+    implementation 'com.github.florent37:diagonallayout:1.0.9'
+    implementation 'com.flaviofaria:kenburnsview:1.0.7'
+
+
     implementation 'androidx.room:room-runtime:2.1.0'
     annotationProcessor 'androidx.room:room-compiler:2.1.0'
 

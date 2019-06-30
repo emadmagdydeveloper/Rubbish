@@ -1,6 +1,8 @@
 package com.creative.share.apps.rubbish.adapters;
 
 import android.content.Context;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.creative.share.apps.rubbish.R;
 import com.creative.share.apps.rubbish.models.OrderModel;
 import com.creative.share.apps.rubbish.ui_supervisor.fragments.Supervisor_Fragment_Orders;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SupervisorOrderAdapter extends RecyclerView.Adapter<SupervisorOrderAdapter.MyHolder> {
 
@@ -60,6 +65,7 @@ public class SupervisorOrderAdapter extends RecyclerView.Adapter<SupervisorOrder
     public class MyHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_client_name,tv_order_state,tv_order_date,tv_send;
+        private CircleImageView image;
 
         private MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -67,6 +73,7 @@ public class SupervisorOrderAdapter extends RecyclerView.Adapter<SupervisorOrder
             tv_order_state = itemView.findViewById(R.id.tv_order_state);
             tv_order_date = itemView.findViewById(R.id.tv_order_date);
             tv_send = itemView.findViewById(R.id.tv_send);
+            image = itemView.findViewById(R.id.image);
 
         }
 
@@ -87,6 +94,15 @@ public class SupervisorOrderAdapter extends RecyclerView.Adapter<SupervisorOrder
 
                 }
 
+            if (orderModel.getFrom_image()!=null&&!TextUtils.isEmpty(orderModel.getFrom_image()))
+            {
+                Picasso.with(context).load(Uri.parse(orderModel.getFrom_image())).placeholder(R.drawable.user_avatar).fit().into(image);
+
+            }else
+                {
+                    Picasso.with(context).load(R.drawable.user_avatar).fit().into(image);
+
+                }
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa",Locale.ENGLISH);
             String date = dateFormat.format(new Date(orderModel.getOrder_time()));
             tv_order_date.setText(date);

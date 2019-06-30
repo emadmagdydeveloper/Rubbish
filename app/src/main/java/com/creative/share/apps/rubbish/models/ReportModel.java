@@ -7,6 +7,7 @@ public class ReportModel implements Serializable {
     private String report_id;
     private String supervisor_id;
     private String supervisor_name;
+    private String supervisor_image;
     private String employee_id;
     private String employee_name;
     private String report;
@@ -16,10 +17,11 @@ public class ReportModel implements Serializable {
     }
 
 
-    public ReportModel(String report_id, String supervisor_id, String supervisor_name, String employee_id, String employee_name, String report, long date) {
+    public ReportModel(String report_id, String supervisor_id, String supervisor_name, String supervisor_image, String employee_id, String employee_name, String report, long date) {
         this.report_id = report_id;
         this.supervisor_id = supervisor_id;
         this.supervisor_name = supervisor_name;
+        this.supervisor_image = supervisor_image;
         this.employee_id = employee_id;
         this.employee_name = employee_name;
         this.report = report;
@@ -80,5 +82,13 @@ public class ReportModel implements Serializable {
 
     public void setDate(long date) {
         this.date = date;
+    }
+
+    public String getSupervisor_image() {
+        return supervisor_image;
+    }
+
+    public void setSupervisor_image(String supervisor_image) {
+        this.supervisor_image = supervisor_image;
     }
 }

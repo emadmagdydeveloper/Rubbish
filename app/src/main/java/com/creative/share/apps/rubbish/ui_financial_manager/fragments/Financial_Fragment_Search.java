@@ -108,6 +108,7 @@ public class Financial_Fragment_Search extends Fragment {
                     String emp_name = edt_search.getText().toString().trim();
                     if (!TextUtils.isEmpty(emp_name))
                     {
+
                        activity.updateSalary(0,0,0);
                         search(emp_name);
                     }
@@ -223,6 +224,10 @@ public class Financial_Fragment_Search extends Fragment {
         {
             if (userModel.getName().contains(emp_name))
             {
+                total_salary=0;
+                total_bonus =0;
+                total = 0;
+
                 employeeModelList.add(userModel);
                 total_salary +=userModel.getSalary();
                 total_bonus  += userModel.getBonus();
@@ -231,6 +236,8 @@ public class Financial_Fragment_Search extends Fragment {
 
         if (employeeModelList.size()>0)
         {
+
+
             adapter.notifyDataSetChanged();
             tv_no_emp.setVisibility(View.GONE);
             total = total_salary+total_bonus;
@@ -264,6 +271,10 @@ public class Financial_Fragment_Search extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() != null) {
 
+                            total_salary=0;
+                            total_bonus =0;
+                            total = 0;
+
                             employeeModelList.clear();
                             mainEmployeeList.clear();
                             for (DataSnapshot ds:dataSnapshot.getChildren())
@@ -276,6 +287,7 @@ public class Financial_Fragment_Search extends Fragment {
                                     {
                                         if (userMode.getCity_id()==city_id)
                                         {
+
 
                                             total_salary +=userMode.getSalary();
                                             total_bonus  += userMode.getBonus();

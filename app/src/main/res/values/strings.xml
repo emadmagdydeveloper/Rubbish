@@ -96,6 +96,18 @@
     <string name="ewaste_content">e_waste content</string>
     <string name="no_sv_to_receive_order">No supervisor available to receive your order</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="select_a_picture_to_upload">Select a picture to upload</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="perm_image_denied">Access to images denied</string>
+    <string name="forget_password">Forget password</string>
+    <string name="new_password">New Password</string>
+    <string name="reset">Reset</string>
+    <string name="forget_password2">Forget Password ?</string>
+    <string name="we_will_send_link">We will send a link to your email to recover your password.</string>
+    <string name="view_on_map">View on map</string>
+    <string name="edit">Edit</string>
 
 
     <string-array name="job_array">

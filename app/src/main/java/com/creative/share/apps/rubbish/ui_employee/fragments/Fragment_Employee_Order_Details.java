@@ -3,9 +3,11 @@ package com.creative.share.apps.rubbish.ui_employee.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,6 +74,7 @@ public class Fragment_Employee_Order_Details extends Fragment implements OnMapRe
     public static final String TAG = "ORDER";
     private ImageView image_back;
     private TextView tv_name, tv_address, tv_order_state;
+    private LinearLayout ll_view_on_map;
     private Preference preference;
     private Button btn_accept;
     private UserModel userModel;
@@ -122,6 +126,7 @@ public class Fragment_Employee_Order_Details extends Fragment implements OnMapRe
         tv_name = view.findViewById(R.id.tv_name);
         tv_address = view.findViewById(R.id.tv_address);
         tv_order_state = view.findViewById(R.id.tv_order_state);
+        ll_view_on_map = view.findViewById(R.id.ll_view_on_map);
 
 
         btn_accept = view.findViewById(R.id.btn_accept);
@@ -154,6 +159,26 @@ public class Fragment_Employee_Order_Details extends Fragment implements OnMapRe
             }
 
         }
+        ll_view_on_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sAdd = lat+","+lng;
+                String dAdd = orderModel.getFrom_latitude()+","+orderModel.getFrom_longitude();
+                String path = "http://maps.google.com/maps?saddr="+sAdd+"&daddr="+dAdd;
+
+                try {
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(path));
+                    intent.setPackage("com.google.android.apps.maps");
+                    startActivity(intent);
+
+                }catch (Exception e)
+                {
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(path));
+                    startActivity(intent);
+
+                }
+            }
+        });
         getOrderState();
 
 
@@ -175,17 +200,22 @@ public class Fragment_Employee_Order_Details extends Fragment implements OnMapRe
                             if (acceptanceOrderModel.getOrder_state() == 1) {
                                 tv_order_state.setVisibility(View.GONE);
                                 btn_accept.setVisibility(View.VISIBLE);
+                                ll_view_on_map.setVisibility(View.VISIBLE);
                                 dialog.dismiss();
                             } else{
                                 dialog.dismiss();
 
                                 tv_order_state.setVisibility(View.GONE);
                                 btn_accept.setVisibility(View.GONE);
+                                ll_view_on_map.setVisibility(View.GONE);
+
 
                             }
                         } else {
                             tv_order_state.setVisibility(View.GONE);
                             btn_accept.setVisibility(View.VISIBLE);
+                            ll_view_on_map.setVisibility(View.VISIBLE);
+
                             dialog.dismiss();
                         }
                     }
@@ -211,6 +241,8 @@ public class Fragment_Employee_Order_Details extends Fragment implements OnMapRe
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             btn_accept.setVisibility(View.GONE);
+                            ll_view_on_map.setVisibility(View.GONE);
+
                             AddNotificationForClient(dialog);
                         }
                     }

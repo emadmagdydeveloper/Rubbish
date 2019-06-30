@@ -1,6 +1,8 @@
 package com.creative.share.apps.rubbish.adapters;
 
 import android.content.Context;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +17,11 @@ import com.creative.share.apps.rubbish.models.UserModel;
 import com.creative.share.apps.rubbish.ui_financial_manager.fragments.Financial_Fragment_Search;
 import com.creative.share.apps.rubbish.ui_head_manager.fragmens.Head_Manager_Fragment_Search;
 import com.creative.share.apps.rubbish.ui_supervisor.fragments.Supervisor_Fragment_Search;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.MyHolder> {
 
@@ -76,15 +81,27 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.MyHold
     public class MyHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_name;
+        private CircleImageView image;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_name);
+            image = itemView.findViewById(R.id.image);
 
         }
 
         public void BindData(UserModel userModel) {
             tv_name.setText(userModel.getName());
+            if (userModel.getImage()!=null&&!TextUtils.isEmpty(userModel.getImage()))
+            {
+                Picasso.with(context).load(Uri.parse(userModel.getImage())).placeholder(R.drawable.user_avatar).fit().into(image);
+
+            }else
+            {
+                Picasso.with(context).load(R.drawable.user_avatar).fit().into(image);
+
+            }
+
 
         }
     }

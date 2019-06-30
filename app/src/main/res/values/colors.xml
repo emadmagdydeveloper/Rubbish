@@ -14,5 +14,6 @@
     <color name="bottom_sheet_color">#77000000</color>
     <color name="delete">#F44336</color>
     <color name="btn_deactive">#283593</color>
+    <color name="cpt">#333F51B5</color>
 
 </resources>

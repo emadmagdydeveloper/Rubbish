@@ -249,7 +249,7 @@ public class Fragment_Client_Send_Order extends Fragment implements OnMapReadyCa
 
         String order_id = dRef.child("Supervisor_Orders").push().getKey();
         Calendar calendar = Calendar.getInstance();
-        OrderModel orderModel = new OrderModel(userModel.getUser_id(),m_name,address,lat,lng,0,order_id,calendar.getTimeInMillis());
+        OrderModel orderModel = new OrderModel(userModel.getUser_id(),m_name,address,userModel.getImage(),lat,lng,0,order_id,calendar.getTimeInMillis());
 
         for (String supervisor_id :supervisorIdsList)
         {

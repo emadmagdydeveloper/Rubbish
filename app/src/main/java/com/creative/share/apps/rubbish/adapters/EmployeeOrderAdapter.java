@@ -1,23 +1,30 @@
 package com.creative.share.apps.rubbish.adapters;
 
 import android.content.Context;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.creative.share.apps.rubbish.R;
 import com.creative.share.apps.rubbish.models.OrderModel;
 import com.creative.share.apps.rubbish.ui_employee.fragments.Employee_Fragment_Orders;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EmployeeOrderAdapter extends RecyclerView.Adapter<EmployeeOrderAdapter.MyHolder> {
 
@@ -58,14 +65,21 @@ public class EmployeeOrderAdapter extends RecyclerView.Adapter<EmployeeOrderAdap
     }
 
     public class MyHolder extends RecyclerView.ViewHolder {
-
+        public LinearLayout ll_left,ll_right;
+        public ConstraintLayout cons_background,cons_foreground;
         private TextView tv_client_name,tv_order_state,tv_order_date;
+        private CircleImageView image;
 
         private MyHolder(@NonNull View itemView) {
             super(itemView);
             tv_client_name = itemView.findViewById(R.id.tv_client_name);
             tv_order_state = itemView.findViewById(R.id.tv_order_state);
             tv_order_date = itemView.findViewById(R.id.tv_order_date);
+            image = itemView.findViewById(R.id.image);
+            cons_foreground = itemView.findViewById(R.id.cons_foreground);
+            cons_background = itemView.findViewById(R.id.cons_background);
+            ll_left = itemView.findViewById(R.id.ll_left);
+            ll_right = itemView.findViewById(R.id.ll_right);
 
         }
 
@@ -75,6 +89,15 @@ public class EmployeeOrderAdapter extends RecyclerView.Adapter<EmployeeOrderAdap
             tv_order_state.setText(context.getString(R.string.new_order));
             tv_order_state.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
 
+            if (orderModel.getFrom_image()!=null&&!TextUtils.isEmpty(orderModel.getFrom_image()))
+            {
+                Picasso.with(context).load(Uri.parse(orderModel.getFrom_image())).placeholder(R.drawable.user_avatar).fit().into(image);
+
+            }else
+            {
+                Picasso.with(context).load(R.drawable.user_avatar).fit().into(image);
+
+            }
 
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa",Locale.ENGLISH);

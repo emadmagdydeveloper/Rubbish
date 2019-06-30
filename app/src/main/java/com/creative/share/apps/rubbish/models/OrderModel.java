@@ -7,8 +7,10 @@ public class OrderModel implements Serializable {
     private String from_id;
     private String from_name;
     private String from_address;
+    private String from_image;
     private double from_latitude;
     private double from_longitude;
+
     private int order_is_sent;
     private String order_id;
     private long order_time;
@@ -16,10 +18,11 @@ public class OrderModel implements Serializable {
     public OrderModel() {
     }
 
-    public OrderModel(String from_id, String from_name, String from_address, double from_latitude, double from_longitude, int order_is_sent, String order_id, long order_time) {
+    public OrderModel(String from_id, String from_name, String from_address, String from_image, double from_latitude, double from_longitude, int order_is_sent, String order_id, long order_time) {
         this.from_id = from_id;
         this.from_name = from_name;
         this.from_address = from_address;
+        this.from_image = from_image;
         this.from_latitude = from_latitude;
         this.from_longitude = from_longitude;
         this.order_is_sent = order_is_sent;
@@ -89,5 +92,13 @@ public class OrderModel implements Serializable {
 
     public void setOrder_time(long order_time) {
         this.order_time = order_time;
+    }
+
+    public String getFrom_image() {
+        return from_image;
+    }
+
+    public void setFrom_image(String from_image) {
+        this.from_image = from_image;
     }
 }
