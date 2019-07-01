@@ -3,6 +3,7 @@ package com.creative.share.apps.rubbish.ui_supervisor.fragments;
 import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,6 @@ public class Supervisor_Fragment_Orders extends Fragment {
     private int lastSelectedItem = -1;
     private DatabaseReference dRef;
     private List<String> emp_ids_list;
-    private OrderModel orderModel;
     private Preference preference;
     private UserModel userModel;
 
@@ -128,7 +128,7 @@ public class Supervisor_Fragment_Orders extends Fragment {
     private void getOrders()
     {
 
-        dRef.child("Supervisor_Orders").addValueEventListener(new ValueEventListener() {
+        dRef.child("Supervisor_Orders").child(userModel.getUser_id()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -189,17 +189,16 @@ public class Supervisor_Fragment_Orders extends Fragment {
         if (orderModel.getOrder_is_sent()==0)
         {
             lastSelectedItem = position;
-            this.orderModel = orderModel;
-
-            getAllEmployeeIds();
+            getAllEmployeeIds(orderModel);
         }
     }
 
 
 
-    private void getAllEmployeeIds() {
+    private void getAllEmployeeIds(final OrderModel orderModel) {
 
         final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.setCancelable(false);
         dialog.show();
 
         dRef.child("Employees")
@@ -215,7 +214,7 @@ public class Supervisor_Fragment_Orders extends Fragment {
                             }
 
                             if (emp_ids_list.size() > 0) {
-                                SendOrder(emp_ids_list,dialog);
+                                SendOrder(emp_ids_list,dialog,orderModel);
                             } else {
                                 dialog.dismiss();
                                 Toast.makeText(activity, getString(R.string.no_emp_to_send), Toast.LENGTH_SHORT).show();
@@ -234,12 +233,12 @@ public class Supervisor_Fragment_Orders extends Fragment {
                 });
     }
 
-    private void SendOrder(List<String> emp_ids_list, ProgressDialog dialog) {
+    private void SendOrder(List<String> emp_ids_list, final ProgressDialog dialog, final OrderModel orderModel) {
 
         Calendar calendar = Calendar.getInstance();
 
-        orderModel.setOrder_is_sent(1);
-        orderModel.setOrder_time(calendar.getTimeInMillis());
+       orderModel.setOrder_is_sent(1);
+       orderModel.setOrder_time(calendar.getTimeInMillis());
 
         for (String emp_id:emp_ids_list)
         {
@@ -247,7 +246,10 @@ public class Supervisor_Fragment_Orders extends Fragment {
                     .setValue(orderModel);
         }
 
+
+
         dRef.child("Supervisor_Orders")
+                .child(userModel.getUser_id())
                 .child(orderModel.getOrder_id())
                 .setValue(orderModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -258,7 +260,6 @@ public class Supervisor_Fragment_Orders extends Fragment {
                     orderModelList.set(lastSelectedItem, orderModel);
                     adapter.notifyDataSetChanged();
                     lastSelectedItem= -1;
-                    orderModel = null;
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -269,7 +270,44 @@ public class Supervisor_Fragment_Orders extends Fragment {
         });
 
 
-        dialog.dismiss();
+        dRef.child("Supervisor_Orders")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue()!=null)
+                        {
+                            for (DataSnapshot ds :dataSnapshot.getChildren())
+                            {
+                                if (ds.getKey()!=null)
+                                {
+                                    if (!userModel.getUser_id().equals(ds.getKey()))
+                                    {
+                                        dRef.child("Supervisor_Orders").child(ds.getKey()).child(orderModel.getOrder_id())
+                                                .removeValue();
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+        new Handler()
+                .postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.dismiss();
+
+                    }
+                },1500);
     }
 
 
